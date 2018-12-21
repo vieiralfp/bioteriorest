@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -22,6 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author Idaf
  */
 @Entity
+@Table(name = "laboratorioraiva.inoculacao")
 @XmlRootElement
 public class Inoculacao implements Serializable {
 
