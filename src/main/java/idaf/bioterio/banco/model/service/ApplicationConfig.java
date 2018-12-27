@@ -37,6 +37,7 @@ public class ApplicationConfig extends Application {
         resources.add(idaf.bioterio.banco.model.service.InoculacaoRest.class);
         resources.add(idaf.bioterio.banco.model.service.LoginRest.class);
         resources.add(idaf.bioterio.banco.model.service.MunicipioRest.class);
+        resources.add(idaf.bioterio.banco.model.service.ObservacaoCamundongoRest.class);
         resources.add(idaf.bioterio.banco.model.service.PrincipalRest.class);
         resources.add(idaf.bioterio.banco.model.service.RacasRest.class);
         resources.add(idaf.bioterio.banco.model.service.RemetenteRest.class);
