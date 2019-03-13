@@ -27,25 +27,26 @@ public abstract class AbstractRest<T, E extends AbstractDAO<T>> {
     public abstract E getDao();
 
     @POST    
-    public void create(T entity) {
+    public T create(T entity) {
         getDao().create(entity);
+        return entity;
     }
 
     @PUT
     @Path("{id}")
-    public void edit(@PathParam("id") Integer id, T entity) {
+    public void edit(@PathParam("id") Long id, T entity) {
         getDao().edit(entity);
     }
 
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") Integer id) {
+    public void remove(@PathParam("id") Long id) {
         getDao().remove(getDao().find(id));
     }
 
     @GET
     @Path("{id}")
-    public T find(@PathParam("id") Integer id) {
+    public T find(@PathParam("id") Long id) {
         return getDao().find(id);
     }
 
@@ -56,8 +57,8 @@ public abstract class AbstractRest<T, E extends AbstractDAO<T>> {
 
     @GET
     @Path("{from}/{to}")
-    public List<T> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return getDao().findRange(new int[]{from, to});
+    public List<T> findRange(@PathParam("from") Long from, @PathParam("to") Long to) {
+        return getDao().findRange(new int[]{from.intValue(), to.intValue()});
     }
 
     @GET

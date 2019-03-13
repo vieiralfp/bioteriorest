@@ -7,8 +7,13 @@ package idaf.bioterio.banco.dao;
 
 import javax.ejb.Stateless;
 import idaf.bioterio.banco.model.Login;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 
 /**
@@ -28,6 +33,16 @@ public class LoginDao extends AbstractDAO<Login>{
     @Override
     protected EntityManager getEntityManager() {
         return em;
+    }
+
+    public List<Login> getLoginVeterinarios() {
+        TypedQuery<Login> tq = em.createQuery("Select l From Login l Where l.tipousuario='Veterinário' AND l.ativo = TRUE ", Login.class);
+        try{
+            return tq.getResultList();
+        }catch(Exception ex){
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, null, ex);
+            return new ArrayList<>();
+        }
     }
     
 }

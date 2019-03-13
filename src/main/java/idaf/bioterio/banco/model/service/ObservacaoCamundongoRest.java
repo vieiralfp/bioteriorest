@@ -6,10 +6,14 @@
 package idaf.bioterio.banco.model.service;
 
 import idaf.bioterio.banco.dao.ObservacaoCamundongoDao;
+import idaf.bioterio.banco.model.Inoculacao;
 import idaf.bioterio.banco.model.ObservacaoCamundongo;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -28,6 +32,12 @@ public class ObservacaoCamundongoRest extends AbstractRest<ObservacaoCamundongo,
     @Override
     public ObservacaoCamundongoDao getDao() {
         return dao;
+    }
+    
+    @GET
+    @Path("listaobservacaoporinoculacao/{id}")
+    public List<ObservacaoCamundongo> getObsCamundongoPorInoculacao(@PathParam("id") Long id){
+        return dao.getListObservacaoCamundongoPorInoculacao(id);
     }
     
 }

@@ -7,11 +7,14 @@ package idaf.bioterio.banco.model.service;
 
 import idaf.bioterio.banco.dao.LoginDao;
 import idaf.bioterio.banco.model.Login;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import static org.glassfish.jersey.uri.UriComponent.Type.PATH;
 
 /**
  *
@@ -28,6 +31,12 @@ public class LoginRest extends AbstractRest<Login, LoginDao> {
     @Override
     public LoginDao getDao() {
         return loginDao;
+    }
+    
+    @GET
+    @Path("loginveterinarios")
+    public List<Login> getLoginVeterinarios(){
+        return loginDao.getLoginVeterinarios();
     }
     
 }
