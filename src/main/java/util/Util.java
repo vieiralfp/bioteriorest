@@ -5,8 +5,13 @@
  */
 package util;
 
+import dao.InoculacaoDao;
+import model.Inoculacao;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import javax.ejb.EJB;
+
 
 /**
  *
@@ -42,5 +47,19 @@ public class Util {
         
         return fim.getTime();
     }
+    /**
+     * Adiciona ou subtrai dias a data. Para subtrair use o sinal (-) negativo
+     * @param data
+     * @param dias
+     * @return 
+     */
+    public static Date adicionarOuSubtrairDiasData(Date data, int dias){
+        System.out.println("util.Util.adicionarOuSubtrairDiasData()="+data);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(data);
+        cal.add(Calendar.DATE, dias);
+        return cal.getTime();
+    }
+    
     
 }
