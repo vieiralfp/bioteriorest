@@ -72,27 +72,22 @@ public class InoculacaoDao extends AbstractDAO<Inoculacao> {
      * @param data
      * @return 
      */
-    public List<Inoculacao> listaSeisDias(Date data){
+    public List<Object[]> listaSeisDias(Date data){
         
        // Pesquisa deve retornar todas as inoculações que não tenham sido finalizadas,
        // que tenham mais de seis dias da data da inoculação
        // e que não tenha nenhum registro de eutanásia a partir do dia 6
-       TypedQuery<Inoculacao> tq = em.createQuery("SELECT DISTINCT(i) "
-               + "From ObservacaoCamundongo o Inner Join o.inoculacao As i "
-               + "Where i.dataFinalizacao IS NULL AND "
-             //  + "(Cast(:dataPesquisada AS Date) - Cast(i.dataInoculacao As Date) >= 6) "
-               + "o.dataObservacao Between (i.dataInoculacao + 6 ) And :dataPesquisada "
-               + "Group By (i) HAVING Sum (o.eutanasias) = 0 Order By i.dataInoculacao, i.principal ", Inoculacao.class);
+       TypedQuery<Object[]> tq = em.createQuery(
+                "SELECT DISTINCT(i.id), i.principal.registro From Inoculacao i "
+                + "Join i.observacaocamundongolist AS o "
+                + "Where i.dataFinalizacao IS NULL AND  "
+                + "o.dataObservacao Between (i.dataInoculacao + 6 ) And :dataPesquisada "
+                + "Group By i.id, i.principal.registro "
+                + "HAVING Sum (o.eutanasias) = 0 Order By i.dataInoculacao, i.principal "
+                       ,
+               Object[].class);
        tq.setParameter("dataPesquisada", data);
-     /*  
-        List list = tq.getResultList();
-       List lista = new ArrayList<>();
-       for(Object o : list){
-           Object[] o1 = (Object[]) o;
-           lista.add("id="+o1[0] + "soma="+o1[1]);
-       }
-        return lista;
-*/
+    
         return tq.getResultList();
         
     }
@@ -102,15 +97,15 @@ public class InoculacaoDao extends AbstractDAO<Inoculacao> {
      * @param data
      * @return 
      */
-    public List<Inoculacao> listaFinalizacoes(Date data){
+    public List<Object[]> listaFinalizacoes(Date data){
         
        // Pesquisa deve retornar todas as inoculações que não tenham sido finalizadas,
        // que tenham 30 dias ou mais de inoculação
-       TypedQuery<Inoculacao> tq = em.createQuery("SELECT DISTINCT(i) "
+       TypedQuery<Object[]> tq = em.createQuery("SELECT DISTINCT(i.id), i.principal.registro "
                + "From Inoculacao i "
                + "Where i.dataFinalizacao IS NULL AND "
                + "(Cast(:dataPesquisada AS Date) - Cast(i.dataInoculacao As Date) >= 30) "
-               + "Order By i.dataInoculacao, i.principal ", Inoculacao.class);
+               + "Order By i.dataInoculacao, i.principal ", Object[].class);
        tq.setParameter("dataPesquisada", data);
     
         return tq.getResultList();
@@ -122,12 +117,12 @@ public class InoculacaoDao extends AbstractDAO<Inoculacao> {
      * @param data
      * @return 
      */
-    public List<Inoculacao> listaInoculacaoNaoFinalizada(Date data){
+    public List<Object[]> listaInoculacaoNaoFinalizada(Date data){
         
-       TypedQuery<Inoculacao> tq = em.createQuery("SELECT i "
+       TypedQuery<Object[]> tq = em.createQuery("SELECT Distinct(i.id), i.principal.registro "
                + "From Inoculacao i "
                + "Where i.dataFinalizacao IS NULL " 
-               + "Order By i.dataInoculacao, i.principal ", Inoculacao.class);
+               + "Order By i.dataInoculacao, i.principal ", Object[].class);
     
         return tq.getResultList();
         
@@ -150,6 +145,24 @@ public class InoculacaoDao extends AbstractDAO<Inoculacao> {
         
         return  find(lo);
     }
+
+    @Override
+    public void create(Inoculacao entity) {
+        for(ObservacaoCamundongo o : entity.getObservacaocamundongolist()) {
+            o.setInoculacao(entity);
+        }
+        super.create(entity); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void edit(Inoculacao entity) {
+        for(ObservacaoCamundongo o : entity.getObservacaocamundongolist()) {
+            o.setInoculacao(entity);
+        }
+        super.edit(entity); //To change body of generated methods, choose Tools | Templates.
+    }
     
     
+       
+       
 }

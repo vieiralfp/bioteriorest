@@ -6,7 +6,10 @@
 package service;
 
 import dao.AbstractDAO;
+import exceptions.ErrorMessage;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
@@ -49,8 +52,21 @@ public abstract class AbstractRest<T, E extends AbstractDAO<T>> {
     @DELETE
     @Path("{id}")
     @RolesAllowed({"Administrador"})
-    public void remove(@PathParam("id") Long id) {
-        getDao().remove(id);
+    public Response remove(@PathParam("id") Long id) {
+        try {
+            getDao().remove(id);
+            return Response.ok().build();
+        } catch (Exception ex) {
+            Logger.getLogger(AbstractRest.class.getName()).log(Level.SEVERE, null, ex);
+            return Response.status(Response.Status.FORBIDDEN)
+                .entity(ErrorMessage.builder()
+                        .addErro(ex.getMessage())
+                        .addStatusCode(Response.Status.FORBIDDEN.getStatusCode())
+                        .addStatusMessage(Response.Status.FORBIDDEN.toString())
+                        .build())
+                .type(MediaType.APPLICATION_JSON)
+                .build();
+        }
     }
 
     @GET

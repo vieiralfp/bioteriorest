@@ -5,6 +5,7 @@
  */
 package dao;
 
+import exceptions.ErrorMessage;
 import java.util.List;
 import javax.persistence.EntityManager;
 
@@ -30,7 +31,10 @@ public abstract class AbstractDAO<T> {
         getEntityManager().merge(entity);
     }
 
-    public void remove(Long id) {
+    public void remove(Long id) throws Exception {
+        if(id == null) {
+            throw new Exception("Registro inexistente. Erro ao remover.");
+        }
         getEntityManager().
                 remove(getEntityManager().
                         merge(getEntityManager().

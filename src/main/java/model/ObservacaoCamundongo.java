@@ -5,6 +5,8 @@
  */
 package model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Entity;
@@ -37,6 +39,7 @@ public class ObservacaoCamundongo implements Serializable {
     private Date dataObservacao;
     @ManyToOne
     @JoinColumn(referencedColumnName = "id")
+    @JsonProperty(value = "inoculacao", access = JsonProperty.Access.WRITE_ONLY)
     private Inoculacao inoculacao;
 
     public Long getId() {

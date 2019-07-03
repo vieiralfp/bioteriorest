@@ -61,8 +61,7 @@ public class InoculacaoRest extends AbstractRest<Inoculacao, InoculacaoDao>{
     @Path("naofinalizada/{data}")
     public Response listaInoculacaoNaoFinalizada(@PathParam("data") long data){
         Date d = new Date( data);        
-        List<Inoculacao> lista = dao.listaInoculacaoNaoFinalizada(d);
-        return Response.ok(lista).build();
+        return Response.ok(dao.listaInoculacaoNaoFinalizada(d)).build();
     }
     
     @GET

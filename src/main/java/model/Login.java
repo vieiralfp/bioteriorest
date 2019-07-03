@@ -100,6 +100,8 @@ public class Login implements Serializable {
         this.id = id;
     }
 
+    @XmlTransient    
+    @JsonIgnore
     public byte[] getAssinatura() {
         return assinatura;
     }

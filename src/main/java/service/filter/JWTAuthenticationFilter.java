@@ -42,7 +42,7 @@ public class JWTAuthenticationFilter implements ContainerRequestFilter {
                 String login = TokenJWTUtil.recuperarLogin(token, key);
                 String nome = (String) TokenJWTUtil.recuperarClaims(token, key, "nome", String.class);
                 String role = (String) TokenJWTUtil.recuperarClaims(token, key, "roles", String.class);
-                
+
                 UserDetails userDetails = new UserDetails(login, nome, role);
  
                 boolean secure = true ; /* permite acesso só em https requestContext.getSecurityContext().isSecure();*/

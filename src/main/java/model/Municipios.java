@@ -79,6 +79,8 @@ public class Municipios implements Serializable {
         this.id = id;
     }
 
+    @XmlTransient    
+    @JsonIgnore
     public String getCentrocoord() {
         return centrocoord;
     }
@@ -87,6 +89,8 @@ public class Municipios implements Serializable {
         this.centrocoord = centrocoord;
     }
 
+    @XmlTransient    
+    @JsonIgnore
     public String getCoordenadas() {
         return coordenadas;
     }
