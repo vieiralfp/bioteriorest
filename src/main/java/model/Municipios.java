@@ -22,6 +22,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.eclipse.persistence.annotations.Index;
 
 /**
  *
@@ -44,25 +45,19 @@ public class Municipios implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Size(max = 255)
-    @Column(name = "centrocoord")
-    private String centrocoord;
-    @Size(max = 2147483647)
-    @Column(name = "coordenadas")
-    private String coordenadas;
-    @Size(max = 2)
-    @Column(name = "estado")
-    private String estado;
-    @Lob
+    @Index
     @Column(name = "municipio", columnDefinition = "citext")
     private String municipio;
     @Lob
-    @Column(name = "regional")
+    @Column (name = "coordenadas")
+    private String coordenadas;
+    @Column (name = "centrocoord")
+    private String centrocoord;
+    @Column (name = "regional", columnDefinition = "citext")
     private String regional;
-    @OneToMany(mappedBy = "cidadeid")
-    private List<Remetente> remetenteCollection;
-    @OneToMany(mappedBy = "municipioid")
-    private List<Principal> principalCollection;
+    
+    @Column(name = "estado", length = 2)
+    private String estado;
 
     public Municipios() {
     }
@@ -121,26 +116,6 @@ public class Municipios implements Serializable {
 
     public void setRegional(String regional) {
         this.regional = regional;
-    }
-
-
-
-    @XmlTransient    @JsonIgnore
-    public List<Remetente> getRemetenteCollection() {
-        return remetenteCollection;
-    }
-
-    public void setRemetenteCollection(List<Remetente> remetenteCollection) {
-        this.remetenteCollection = remetenteCollection;
-    }
-
-    @XmlTransient    @JsonIgnore
-    public List<Principal> getPrincipalCollection() {
-        return principalCollection;
-    }
-
-    public void setPrincipalCollection(List<Principal> principalCollection) {
-        this.principalCollection = principalCollection;
     }
 
     @Override

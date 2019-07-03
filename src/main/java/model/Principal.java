@@ -12,18 +12,21 @@ import java.math.BigInteger;
 import java.util.List;
 import java.util.Date;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
+import org.eclipse.persistence.annotations.Index;
 
 
 /**
@@ -40,143 +43,142 @@ public class Principal implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
-    private Integer id;
-    @Size(max = 255)
-    @Column(name = "alimentacao")
-    private String alimentacao;
+    private Long id;
+    @Index
+    @Column(name = "registro", unique = true)
+    private String registro;
+    @Basic(optional = false)
+    @Column(name = "namostra")
+    private Integer namostra;
+    @Index
     @Column(name = "dataentrada")
     @Temporal(TemporalType.DATE)
     private Date dataentrada;
-    @Column(name = "dataresultado1")
-    @Temporal(TemporalType.DATE)
-    private Date dataresultado1;
-    @Column(name = "dataresultado2")
-    @Temporal(TemporalType.DATE)
-    private Date dataresultado2;
-    @Size(max = 255)
-    @Column(name = "diferencial")
-    private String diferencial;
-    @Column(name = "eeb")
-    private Boolean eeb;
-    @Size(max = 255)
-    @Column(name = "endereco")
-    private String endereco;
-    @Column(name = "fecharresultado1")
-    private Boolean fecharresultado1;
-    @Column(name = "fecharresultado2")
-    private Boolean fecharresultado2;
-    @Column(name = "formin")
-    private BigInteger formin;
-    @Column(name = "hora")
+    @Column (name= "hora")
     @Temporal(TemporalType.TIME)
     private Date hora;
-    @Size(max = 255)
+    @Column(name = "datacolheita")
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date datacolheita;
+    @Column(name = "proprietario", columnDefinition = "citext")
+    private String proprietario;
+    @Column(name = "endereco")
+    private String endereco;
+    @ManyToOne
+    @JoinColumn(name = "remetenteid", referencedColumnName = "id")
+    private Remetente remetenteid; 
+    @Column(name="contatoremetente")
+    private String contatoremetente;
+    @ManyToOne
+    @JoinColumn(name = "municipioid", referencedColumnName = "id")
+    private Municipios municipioid;
+    @ManyToOne
+    @JoinColumn(name = "especieid", referencedColumnName = "id")
+    private Especie especieid;
+    @ManyToOne
+    @JoinColumn(name = "racaid", referencedColumnName = "id")
+    private Racas racaid;
+    @Column(name = "sexo")
+    private String sexo;
     @Column(name = "idade")
     private String idade;
-    @Column(name = "namostra")
-    private Integer namostra;
+    @Column(name = "formin")
+    private Long formin;
+    
     @Size(max = 2147483647)
     @Column(name = "natamostra")
     private String natamostra;
-    @Size(max = 255)
-    @Column(name = "obs")
-    private String obs;
-    @Size(max = 2147483647)
-    @Column(name = "observacoes")
-    private String observacoes;
-    @Size(max = 255)
-    @Column(name = "pelagem")
-    private String pelagem;
-    @Column(name = "proprietario", columnDefinition = "citext")
-    private String proprietario;
-    @Size(max = 255)
-    @Column(name = "registro")
-    private String registro;
-    @Size(max = 255)
-    @Column(name = "remetente")
-    private String remetente;
-    @Size(max = 255)
+    
+    /**
+     * Informações de Resultados
+     */
     @Column(name = "resultado1")
     private String resultado1;
-    @Size(max = 255)
+    @Column(name = "dataresultado1")
+    @Temporal(TemporalType.DATE)
+    private Date dataresultado1;    
+    
     @Column(name = "resultado2")
     private String resultado2;
-    @Size(max = 255)
-    @Column(name = "sexo")
-    private String sexo;
-    @Column(name = "sivcont")
-    private Boolean sivcont;
-    @Column(name = "ultimaatualizacao")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date ultimaatualizacao;
-    @Size(max = 255)
-    @Column(name = "usuario")
-    private String usuario;
-    @Column(name = "agressao")
-    private Boolean agressao;
-    @Column(name = "contato")
-    private Boolean contato;
-    @Column(name = "datacolheita")
+    @Column(name = "iniciopb")
     @Temporal(TemporalType.DATE)
-    private Date datacolheita;
-    @Column(name = "contatoagressao")
-    private Boolean contatoagressao;
-    @Size(max = 255)
-    @Column(name = "materialanalisadoifd")
-    private String materialanalisadoifd;
-    @Size(max = 255)
-    @Column(name = "materialanalisadopb")
-    private String materialanalisadopb;
-    @Size(max = 2147483647)
-    @Column(name = "observacoespb")
-    private String observacoespb;
-    @JoinColumn(name = "especieid", referencedColumnName = "id")
-    @ManyToOne
-    private Especie especieid;
-    @JoinColumn(name = "especiemorcegoid", referencedColumnName = "id")
-    @ManyToOne
-    private Especiemorcego especiemorcegoid;
-    @JoinColumn(name = "recebeuid", referencedColumnName = "id")
-    @ManyToOne
-    private Login recebeuid;
-    @JoinColumn(name = "ultimousuario", referencedColumnName = "id")
-    @ManyToOne
-    @JsonView()
-    private Login ultimousuario;
+    private Date iniciopb;
+    @Column(name = "dataresultado2")
+    @Temporal(TemporalType.DATE)
+    private Date dataresultado2;
+    
+    @Column (name="fecharresultado1")
+    private boolean fecharresultado1;
+    @Column (name="fecharresultado2")
+    private boolean fecharresultado2;
+    
     @JoinColumn(name = "veterinarioresponsavel1", referencedColumnName = "id")
     @ManyToOne
     private Login veterinarioresponsavel1;
     @JoinColumn(name = "veterinarioresponsavel2", referencedColumnName = "id")
     @ManyToOne
     private Login veterinarioresponsavel2;
-    @JoinColumn(name = "municipioid", referencedColumnName = "id")
+    
+    @Lob
+    @Column(name = "observacoes")
+    private String observacoes;
+    @Lob
+    @Column(name = "observacoesPB")
+    private String observacoespb;
+    
+     private String materialanalisadoifd;
+    private String materialanalisadopb;
+    
+    
+    /**
+     * Outras informações
+     */
+    
     @ManyToOne
-    private Municipios municipioid;
-    @JoinColumn(name = "racaid", referencedColumnName = "id")
+    @JoinColumn(name = "recebeuid", referencedColumnName = "id")
+    private Login recebeuid;
+    
+    @Column(name="sivcont")
+    private boolean sivcont;
+    @Column(name="eeb")
+    private boolean eeb;
+        
+    @OneToMany(mappedBy = "idprincipal")
+    private List<Diagnosticodiferencial> diagnosticodiferenciallist;
+    
+    
     @ManyToOne
-    private Racas racaid;
-    @JoinColumn(name = "remetenteid", referencedColumnName = "id")
+    @JoinColumn(name = "especiemorcegoid", referencedColumnName = "id")
+    private Especiemorcego especiemorcegoid;
+    @Column(name = "alimentacao")
+    private String alimentacao;
+    
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "principal")
+    private List<Liberacaoderesultados> libercaoDeResultados;
+    private transient boolean enviarIFD;
+    private transient boolean enviarPB;
+    private Boolean contatoagressao;
+   
+   
+    @Column(name = "ultimaatualizacao")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date ultimaatualizacao;
     @ManyToOne
-    private Remetente remetenteid;
-    @OneToMany(mappedBy = "idPrincipal")
-    private List<Diagnosticodiferencial> diagnosticodiferencialCollection;
-    @OneToMany(mappedBy = "principalidId")
-    private List<Relatorioensaio> relatorioensaioCollection;
-    @OneToMany(mappedBy = "principal")
-    private List<Liberacaoderesultados> liberacaoderesultadosCollection;
+    @JoinColumn(name = "ultimousuario", referencedColumnName = "id")
+    private Login ultimousuario;
 
     public Principal() {
     }
 
-    public Principal(Integer id) {
+    public Principal(Long id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -212,14 +214,6 @@ public class Principal implements Serializable {
         this.dataresultado2 = dataresultado2;
     }
 
-    public String getDiferencial() {
-        return diferencial;
-    }
-
-    public void setDiferencial(String diferencial) {
-        this.diferencial = diferencial;
-    }
-
     public Boolean getEeb() {
         return eeb;
     }
@@ -252,11 +246,11 @@ public class Principal implements Serializable {
         this.fecharresultado2 = fecharresultado2;
     }
 
-    public BigInteger getFormin() {
+    public Long getFormin() {
         return formin;
     }
 
-    public void setFormin(BigInteger formin) {
+    public void setFormin(Long formin) {
         this.formin = formin;
     }
 
@@ -292,28 +286,12 @@ public class Principal implements Serializable {
         this.natamostra = natamostra;
     }
 
-    public String getObs() {
-        return obs;
-    }
-
-    public void setObs(String obs) {
-        this.obs = obs;
-    }
-
     public String getObservacoes() {
         return observacoes;
     }
 
     public void setObservacoes(String observacoes) {
         this.observacoes = observacoes;
-    }
-
-    public String getPelagem() {
-        return pelagem;
-    }
-
-    public void setPelagem(String pelagem) {
-        this.pelagem = pelagem;
     }
 
     public String getProprietario() {
@@ -330,14 +308,6 @@ public class Principal implements Serializable {
 
     public void setRegistro(String registro) {
         this.registro = registro;
-    }
-
-    public String getRemetente() {
-        return remetente;
-    }
-
-    public void setRemetente(String remetente) {
-        this.remetente = remetente;
     }
 
     public String getResultado1() {
@@ -378,30 +348,6 @@ public class Principal implements Serializable {
 
     public void setUltimaatualizacao(Date ultimaatualizacao) {
         this.ultimaatualizacao = ultimaatualizacao;
-    }
-
-    public String getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
-    }
-
-    public Boolean getAgressao() {
-        return agressao;
-    }
-
-    public void setAgressao(Boolean agressao) {
-        this.agressao = agressao;
-    }
-
-    public Boolean getContato() {
-        return contato;
-    }
-
-    public void setContato(Boolean contato) {
-        this.contato = contato;
     }
 
     public Date getDatacolheita() {
@@ -517,31 +463,88 @@ public class Principal implements Serializable {
     }
 
     @JsonIgnore
-    public List<Diagnosticodiferencial> getDiagnosticodiferencialCollection() {
-        return diagnosticodiferencialCollection;
+    public List<Diagnosticodiferencial> getDiagnosticodiferenciallist() {
+        return diagnosticodiferenciallist;
     }
 
-    public void setDiagnosticodiferencialCollection(List<Diagnosticodiferencial> diagnosticodiferencialCollection) {
-        this.diagnosticodiferencialCollection = diagnosticodiferencialCollection;
+    public void setDiagnosticodiferenciallist(List<Diagnosticodiferencial> diagnosticodiferenciallist) {
+        this.diagnosticodiferenciallist = diagnosticodiferenciallist;
     }
-
+    
     @JsonIgnore
-    public List<Relatorioensaio> getRelatorioensaioCollection() {
-        return relatorioensaioCollection;
+    public List<Liberacaoderesultados> getLibercaoDeResultados() {
+        return libercaoDeResultados;
     }
 
-    public void setRelatorioensaioCollection(List<Relatorioensaio> relatorioensaioCollection) {
-        this.relatorioensaioCollection = relatorioensaioCollection;
+    public void setLibercaoDeResultados(List<Liberacaoderesultados> libercaoDeResultados) {
+        this.libercaoDeResultados = libercaoDeResultados;
     }
 
-    @JsonIgnore
-    public List<Liberacaoderesultados> getLiberacaoderesultadosCollection() {
-        return liberacaoderesultadosCollection;
+    public String getContatoremetente() {
+        return contatoremetente;
     }
 
-    public void setLiberacaoderesultadosCollection(List<Liberacaoderesultados> liberacaoderesultadosCollection) {
-        this.liberacaoderesultadosCollection = liberacaoderesultadosCollection;
+    public void setContatoremetente(String contatoremetente) {
+        this.contatoremetente = contatoremetente;
     }
+
+    public Date getIniciopb() {
+        return iniciopb;
+    }
+
+    public void setIniciopb(Date iniciopb) {
+        this.iniciopb = iniciopb;
+    }
+
+    public boolean isFecharresultado1() {
+        return fecharresultado1;
+    }
+
+    public void setFecharresultado1(boolean fecharresultado1) {
+        this.fecharresultado1 = fecharresultado1;
+    }
+
+    public boolean isFecharresultado2() {
+        return fecharresultado2;
+    }
+
+    public void setFecharresultado2(boolean fecharresultado2) {
+        this.fecharresultado2 = fecharresultado2;
+    }
+
+    public boolean isSivcont() {
+        return sivcont;
+    }
+
+    public void setSivcont(boolean sivcont) {
+        this.sivcont = sivcont;
+    }
+
+    public boolean isEeb() {
+        return eeb;
+    }
+
+    public void setEeb(boolean eeb) {
+        this.eeb = eeb;
+    }
+
+    public boolean isEnviarIFD() {
+        return enviarIFD;
+    }
+
+    public void setEnviarIFD(boolean enviarIFD) {
+        this.enviarIFD = enviarIFD;
+    }
+
+    public boolean isEnviarPB() {
+        return enviarPB;
+    }
+
+    public void setEnviarPB(boolean enviarPB) {
+        this.enviarPB = enviarPB;
+    }
+
+        
 
     @Override
     public int hashCode() {

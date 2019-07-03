@@ -9,8 +9,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,6 +25,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.eclipse.persistence.annotations.Index;
 
 /**
  *
@@ -51,40 +54,38 @@ public class Remetente implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Column(name = "apenasdestinatario")
-    private Boolean apenasdestinatario;
-    @Size(max = 255)
-    @Column(name = "bairro")
-    private String bairro;
-    @Column(name = "cep")
-    private Integer cep;
-    @Size(max = 255)
-    @Column(name = "email1")
-    private String email1;
-    @Size(max = 255)
-    @Column(name = "email2")
-    private String email2;
-    @Size(max = 255)
+    @Index 
+    @Column(name = "nome", columnDefinition = "citext", unique = true)
+    private String nome;
     @Column(name = "endereco")
     private String endereco;
-    @Column(name = "nome", columnDefinition = "citext")
-    private String nome;
-    @Size(max = 255)
-    @Column(name = "obsservacoes")
-    private String obsservacoes;
-    @Size(max = 255)
+    @Column(name = "bairro")
+    private String bairro;
+    @Column(name = "cidade", columnDefinition = "citext")
+    private String cidade;
+    @Column(name = "estado", columnDefinition = "citext")
+    private String estado;
+    @Column(name = "cep")
+    private Integer cep;
     @Column(name = "telefone1")
     private String telefone1;
-    @Size(max = 255)
     @Column(name = "telefone2")
     private String telefone2;
-    @JoinColumn(name = "cidadeid", referencedColumnName = "id")
-    @ManyToOne
-    private Municipios cidadeid;
-    @OneToMany(mappedBy = "remetente")
-    private List<Emails> emailsCollection;
+    @Column(name = "email1")
+    private String email1;
+    @Column(name = "email2")
+    private String email2;
+    @Column(name = "obsservacoes")
+    private String obsservacoes;
     @OneToMany(mappedBy = "remetenteid")
-    private List<Principal> principalCollection;
+    private List<Principal> listexame;
+    @ManyToOne
+    @JoinColumn(name = "cidadeid", referencedColumnName = "id")
+    private Municipios cidadeid;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "remetente", fetch = FetchType.EAGER, orphanRemoval = true)
+    private List<Emails> listDestinatarios;
+    @Column(name = "apenasdestinatario")
+    private Boolean apenasdestinatario;
 
     public Remetente() {
     }
@@ -189,23 +190,41 @@ public class Remetente implements Serializable {
         this.cidadeid = cidadeid;
     }
 
-    @XmlTransient    @JsonIgnore
-    public List<Emails> getEmailsCollection() {
-        return emailsCollection;
+    public String getCidade() {
+        return cidade;
     }
 
-    public void setEmailsCollection(List<Emails> emailsCollection) {
-        this.emailsCollection = emailsCollection;
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
     }
 
-    @XmlTransient    @JsonIgnore
-    public List<Principal> getPrincipalCollection() {
-        return principalCollection;
+    public String getEstado() {
+        return estado;
     }
 
-    public void setPrincipalCollection(List<Principal> principalCollection) {
-        this.principalCollection = principalCollection;
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
+
+    @JsonIgnore
+    public List<Principal> getListexame() {
+        return listexame;
+    }
+
+    public void setListexame(List<Principal> listexame) {
+        this.listexame = listexame;
+    }
+
+    @JsonIgnore
+    public List<Emails> getListDestinatarios() {
+        return listDestinatarios;
+    }
+
+    public void setListDestinatarios(List<Emails> listDestinatarios) {
+        this.listDestinatarios = listDestinatarios;
+    }
+    
+    
 
     @Override
     public int hashCode() {

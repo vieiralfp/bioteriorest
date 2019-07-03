@@ -148,6 +148,7 @@ public class InoculacaoDao extends AbstractDAO<Inoculacao> {
 
     @Override
     public void create(Inoculacao entity) {
+        List<ObservacaoCamundongo> novaLista = new ArrayList<>();
         for(ObservacaoCamundongo o : entity.getObservacaocamundongolist()) {
             o.setInoculacao(entity);
         }

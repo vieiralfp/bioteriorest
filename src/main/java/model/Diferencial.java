@@ -14,7 +14,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -40,11 +39,10 @@ public class Diferencial implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Lob
-    @Column(name = "doenca", columnDefinition = "citext")
+    @Column(name = "doenca", columnDefinition = "citext", unique = true)
     private String doenca;
     @OneToMany(mappedBy = "diferencial")
-    private List<Diagnosticodiferencial> diagnosticodiferencialCollection;
+    private List<Diagnosticodiferencial> listDiagnosticodiferencial;
 
     public Diferencial() {
     }
@@ -69,22 +67,22 @@ public class Diferencial implements Serializable {
         this.doenca = doenca;
     }
 
-
     @XmlTransient    @JsonIgnore
-    public List<Diagnosticodiferencial> getDiagnosticodiferencialCollection() {
-        return diagnosticodiferencialCollection;
+    public List<Diagnosticodiferencial> getListDiagnosticodiferencial() {
+        return listDiagnosticodiferencial;
     }
 
-    public void setDiagnosticodiferencialCollection(List<Diagnosticodiferencial> diagnosticodiferencialCollection) {
-        this.diagnosticodiferencialCollection = diagnosticodiferencialCollection;
+    public void setListDiagnosticodiferencial(List<Diagnosticodiferencial> listDiagnosticodiferencial) {
+        this.listDiagnosticodiferencial = listDiagnosticodiferencial;
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
+    
 
     @Override
     public boolean equals(Object object) {

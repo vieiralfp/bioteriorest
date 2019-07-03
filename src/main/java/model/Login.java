@@ -40,50 +40,28 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Login implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
+     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Long id;
-    @Lob
-    @Column(name = "assinatura")
-    private byte[] assinatura;
-    @Column(name = "ativo")
-    private Boolean ativo;
-    @Size(max = 255)
+    @Column(name = "login", columnDefinition = "citext", unique = true)
+    private String login;
     @Column(name = "crmv")
     private String crmv;
-    @Lob
-    @Column(name = "login", columnDefinition = "citext")
-    private String login;
-    @Lob
     @Column(name = "nome", columnDefinition = "citext")
     private String nome;
-    @Size(max = 255)
-    @Column(name = "nomearquivo")
-    private String nomearquivo;
-    @Size(max = 255)
-    @Column(name = "senha")
-    private String senha;
-    @Lob
     @Column(name = "tipousuario", columnDefinition = "citext")
     private String tipousuario;
-    @OneToMany(mappedBy = "responsavelenvio")
-    private List<Liberacaoderelatoriodeensaio> liberacaoderelatoriodeensaioCollection;
-    @OneToMany(mappedBy = "recebeuid")
-    private List<Principal> principalCollection;
-    @OneToMany(mappedBy = "ultimousuario")
-    private List<Principal> principalCollection1;
-    @OneToMany(mappedBy = "veterinarioresponsavel1")
-    private List<Principal> principalCollection2;
-    @OneToMany(mappedBy = "veterinarioresponsavel2")
-    private List<Principal> principalCollection3;
-    @OneToMany(mappedBy = "login")
-    private List<Emailsaida> emailsaidaCollection;
-    @OneToMany(mappedBy = "assinoulaudoId")
-    private List<Relatorioensaio> relatorioensaioCollection;
-    @OneToMany(mappedBy = "responsavelenvio")
-    private List<Liberacaoderesultados> liberacaoderesultadosCollection;
+    @Column(name = "senha")
+    private String senha;
+    @Lob 
+    @Column (name= "assinatura")
+    private byte[] assinatura;
+    @Column(name = "nomearquivo")
+    private String nomearquivo;
+    @Column(name = "ativo")
+    private boolean ativo;
 
     public Login() {
     }
@@ -166,80 +144,6 @@ public class Login implements Serializable {
 
     public void setTipousuario(String tipousuario) {
         this.tipousuario = tipousuario;
-    }
-
-
-    @XmlTransient    
-    @JsonIgnore
-    public List<Liberacaoderelatoriodeensaio> getLiberacaoderelatoriodeensaioCollection() {
-        return liberacaoderelatoriodeensaioCollection;
-    }
-
-    public void setLiberacaoderelatoriodeensaioCollection(List<Liberacaoderelatoriodeensaio> liberacaoderelatoriodeensaioCollection) {
-        this.liberacaoderelatoriodeensaioCollection = liberacaoderelatoriodeensaioCollection;
-    }
-
-    @XmlTransient    @JsonIgnore
-    public List<Principal> getPrincipalCollection() {
-        return principalCollection;
-    }
-
-    public void setPrincipalCollection(List<Principal> principalCollection) {
-        this.principalCollection = principalCollection;
-    }
-
-    @XmlTransient    @JsonIgnore
-    public List<Principal> getPrincipalCollection1() {
-        return principalCollection1;
-    }
-
-    public void setPrincipalCollection1(List<Principal> principalCollection1) {
-        this.principalCollection1 = principalCollection1;
-    }
-
-    @XmlTransient    @JsonIgnore
-    public List<Principal> getPrincipalCollection2() {
-        return principalCollection2;
-    }
-
-    public void setPrincipalCollection2(List<Principal> principalCollection2) {
-        this.principalCollection2 = principalCollection2;
-    }
-
-    @XmlTransient    @JsonIgnore
-    public List<Principal> getPrincipalCollection3() {
-        return principalCollection3;
-    }
-
-    public void setPrincipalCollection3(List<Principal> principalCollection3) {
-        this.principalCollection3 = principalCollection3;
-    }
-
-    @XmlTransient    @JsonIgnore
-    public List<Emailsaida> getEmailsaidaCollection() {
-        return emailsaidaCollection;
-    }
-
-    public void setEmailsaidaCollection(List<Emailsaida> emailsaidaCollection) {
-        this.emailsaidaCollection = emailsaidaCollection;
-    }
-
-    @XmlTransient    @JsonIgnore
-    public List<Relatorioensaio> getRelatorioensaioCollection() {
-        return relatorioensaioCollection;
-    }
-
-    public void setRelatorioensaioCollection(List<Relatorioensaio> relatorioensaioCollection) {
-        this.relatorioensaioCollection = relatorioensaioCollection;
-    }
-
-    @XmlTransient    @JsonIgnore
-    public List<Liberacaoderesultados> getLiberacaoderesultadosCollection() {
-        return liberacaoderesultadosCollection;
-    }
-
-    public void setLiberacaoderesultadosCollection(List<Liberacaoderesultados> liberacaoderesultadosCollection) {
-        this.liberacaoderesultadosCollection = liberacaoderesultadosCollection;
     }
 
     @Override

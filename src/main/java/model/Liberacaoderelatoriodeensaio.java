@@ -7,21 +7,22 @@ package model;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.eclipse.persistence.annotations.Index;
 
 /**
  *
@@ -41,45 +42,48 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Liberacaoderelatoriodeensaio implements Serializable {
 
     private static final long serialVersionUID = 1L;
+        
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Column(name = "datalibrecao")
     @Temporal(TemporalType.DATE)
-    private Date datalibrecao;
-    @Size(max = 2147483647)
-    @Column(name = "emails")
-    private String emails;
-    @Size(max = 255)
-    @Column(name = "formalibercao")
-    private String formalibercao;
-    @Size(max = 2147483647)
+    private Date datalibrecao;    
+    @OneToOne
+    @JoinColumn(name = "responsavelenvio", referencedColumnName = "id")
+    private Login responsavelenvio;
+    @Lob
     @Column(name = "recebedores")
     private String recebedores;
+    @Lob
+    @Column(name = "emails")
+    private String emails;
+    @Column(name = "formalibercao")
+    private String formalibercao;
     @Column(name = "recebido")
-    private Boolean recebido;
-    @JoinColumn(name = "responsavelenvio", referencedColumnName = "id")
+    private boolean recebido;
+    @Index
     @ManyToOne
-    private Login responsavelenvio;
-    @JoinColumn(name = "relatorioensaio_id", referencedColumnName = "id")
-    @ManyToOne
-    private Relatorioensaio relatorioensaioId;
+    @JoinColumn(referencedColumnName = "id")
+    private Relatorioensaio relatorioensaio;
 
     public Liberacaoderelatoriodeensaio() {
     }
 
-    public Liberacaoderelatoriodeensaio(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    public boolean isRecebido() {
+        return recebido;
+    }
+
+    public void setRecebido(boolean recebido) {
+        this.recebido = recebido;
     }
 
     public Date getDatalibrecao() {
@@ -130,13 +134,14 @@ public class Liberacaoderelatoriodeensaio implements Serializable {
         this.responsavelenvio = responsavelenvio;
     }
 
-    public Relatorioensaio getRelatorioensaioId() {
-        return relatorioensaioId;
+     public Relatorioensaio getRelatorioensaio() {
+        return relatorioensaio;
     }
 
-    public void setRelatorioensaioId(Relatorioensaio relatorioensaioId) {
-        this.relatorioensaioId = relatorioensaioId;
+    public void setRelatorioensaio(Relatorioensaio relatorioensaio) {
+        this.relatorioensaio = relatorioensaio;
     }
+ 
 
     @Override
     public int hashCode() {

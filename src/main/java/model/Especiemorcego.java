@@ -5,22 +5,17 @@
  */
 package model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -40,11 +35,8 @@ public class Especiemorcego implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Lob
-    @Column(name = "especie", columnDefinition = "citext")
+    @Column(name = "especie", columnDefinition = "citext", unique = true)
     private String especie;
-    @OneToMany(mappedBy = "especiemorcegoid")
-    private List<Principal> principalCollection;
 
     public Especiemorcego() {
     }
@@ -69,15 +61,6 @@ public class Especiemorcego implements Serializable {
         this.especie = especie;
     }
 
-
-    @XmlTransient    @JsonIgnore
-    public List<Principal> getPrincipalCollection() {
-        return principalCollection;
-    }
-
-    public void setPrincipalCollection(List<Principal> principalCollection) {
-        this.principalCollection = principalCollection;
-    }
 
     @Override
     public int hashCode() {

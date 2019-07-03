@@ -26,13 +26,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "laboratorioraiva.versao")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Versao.findAll", query = "SELECT v FROM Versao v")
-    , @NamedQuery(name = "Versao.findById", query = "SELECT v FROM Versao v WHERE v.id = :id")
-    , @NamedQuery(name = "Versao.findByAlteracaocritica", query = "SELECT v FROM Versao v WHERE v.alteracaocritica = :alteracaocritica")
-    , @NamedQuery(name = "Versao.findByAtualizacao", query = "SELECT v FROM Versao v WHERE v.atualizacao = :atualizacao")
-    , @NamedQuery(name = "Versao.findByData", query = "SELECT v FROM Versao v WHERE v.data = :data")
-    , @NamedQuery(name = "Versao.findByVersao", query = "SELECT v FROM Versao v WHERE v.versao = :versao")})
 public class Versao implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -40,7 +33,7 @@ public class Versao implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Column(name = "alteracaocritica")
     private Boolean alteracaocritica;
     @Column(name = "atualizacao")
@@ -54,15 +47,15 @@ public class Versao implements Serializable {
     public Versao() {
     }
 
-    public Versao(Integer id) {
+    public Versao(Long id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

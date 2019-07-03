@@ -7,25 +7,21 @@ package model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
-import java.util.List;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.Size;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -34,156 +30,75 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "laboratorioraiva.relatorioensaio")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Relatorioensaio.findAll", query = "SELECT r FROM Relatorioensaio r")
-    , @NamedQuery(name = "Relatorioensaio.findById", query = "SELECT r FROM Relatorioensaio r WHERE r.id = :id")
-    , @NamedQuery(name = "Relatorioensaio.findByAno", query = "SELECT r FROM Relatorioensaio r WHERE r.ano = :ano")
-    , @NamedQuery(name = "Relatorioensaio.findByCorrecao", query = "SELECT r FROM Relatorioensaio r WHERE r.correcao = :correcao")
-    , @NamedQuery(name = "Relatorioensaio.findByDatacoleta", query = "SELECT r FROM Relatorioensaio r WHERE r.datacoleta = :datacoleta")
-    , @NamedQuery(name = "Relatorioensaio.findByDataemissao", query = "SELECT r FROM Relatorioensaio r WHERE r.dataemissao = :dataemissao")
-    , @NamedQuery(name = "Relatorioensaio.findByDataentrada", query = "SELECT r FROM Relatorioensaio r WHERE r.dataentrada = :dataentrada")
-    , @NamedQuery(name = "Relatorioensaio.findByDataresultado1", query = "SELECT r FROM Relatorioensaio r WHERE r.dataresultado1 = :dataresultado1")
-    , @NamedQuery(name = "Relatorioensaio.findByDataresultado2", query = "SELECT r FROM Relatorioensaio r WHERE r.dataresultado2 = :dataresultado2")
-    , @NamedQuery(name = "Relatorioensaio.findByEndreco", query = "SELECT r FROM Relatorioensaio r WHERE r.endreco = :endreco")
-    , @NamedQuery(name = "Relatorioensaio.findByEspecie", query = "SELECT r FROM Relatorioensaio r WHERE r.especie = :especie")
-    , @NamedQuery(name = "Relatorioensaio.findByEstado", query = "SELECT r FROM Relatorioensaio r WHERE r.estado = :estado")
-    , @NamedQuery(name = "Relatorioensaio.findByIdade", query = "SELECT r FROM Relatorioensaio r WHERE r.idade = :idade")
-    , @NamedQuery(name = "Relatorioensaio.findByLiberadopor", query = "SELECT r FROM Relatorioensaio r WHERE r.liberadopor = :liberadopor")
-    , @NamedQuery(name = "Relatorioensaio.findByLiberadoporcrmv", query = "SELECT r FROM Relatorioensaio r WHERE r.liberadoporcrmv = :liberadoporcrmv")
-    , @NamedQuery(name = "Relatorioensaio.findByMaterialanalisado", query = "SELECT r FROM Relatorioensaio r WHERE r.materialanalisado = :materialanalisado")
-    , @NamedQuery(name = "Relatorioensaio.findByMaterialanalisadopb", query = "SELECT r FROM Relatorioensaio r WHERE r.materialanalisadopb = :materialanalisadopb")
-    , @NamedQuery(name = "Relatorioensaio.findByMunicipio", query = "SELECT r FROM Relatorioensaio r WHERE r.municipio = :municipio")
-    , @NamedQuery(name = "Relatorioensaio.findByNumerolaudo", query = "SELECT r FROM Relatorioensaio r WHERE r.numerolaudo = :numerolaudo")
-    , @NamedQuery(name = "Relatorioensaio.findByObservacoes1", query = "SELECT r FROM Relatorioensaio r WHERE r.observacoes1 = :observacoes1")
-    , @NamedQuery(name = "Relatorioensaio.findByObservacoes2", query = "SELECT r FROM Relatorioensaio r WHERE r.observacoes2 = :observacoes2")
-    , @NamedQuery(name = "Relatorioensaio.findByProprietario", query = "SELECT r FROM Relatorioensaio r WHERE r.proprietario = :proprietario")
-    , @NamedQuery(name = "Relatorioensaio.findByRaca", query = "SELECT r FROM Relatorioensaio r WHERE r.raca = :raca")
-    , @NamedQuery(name = "Relatorioensaio.findByRegistroamostra", query = "SELECT r FROM Relatorioensaio r WHERE r.registroamostra = :registroamostra")
-    , @NamedQuery(name = "Relatorioensaio.findByRelatorioenviado", query = "SELECT r FROM Relatorioensaio r WHERE r.relatorioenviado = :relatorioenviado")
-    , @NamedQuery(name = "Relatorioensaio.findByRemetente", query = "SELECT r FROM Relatorioensaio r WHERE r.remetente = :remetente")
-    , @NamedQuery(name = "Relatorioensaio.findByResponsavel1", query = "SELECT r FROM Relatorioensaio r WHERE r.responsavel1 = :responsavel1")
-    , @NamedQuery(name = "Relatorioensaio.findByResponsavel2", query = "SELECT r FROM Relatorioensaio r WHERE r.responsavel2 = :responsavel2")
-    , @NamedQuery(name = "Relatorioensaio.findByResultado1", query = "SELECT r FROM Relatorioensaio r WHERE r.resultado1 = :resultado1")
-    , @NamedQuery(name = "Relatorioensaio.findByResultado2", query = "SELECT r FROM Relatorioensaio r WHERE r.resultado2 = :resultado2")
-    , @NamedQuery(name = "Relatorioensaio.findByResultadofinal", query = "SELECT r FROM Relatorioensaio r WHERE r.resultadofinal = :resultadofinal")
-    , @NamedQuery(name = "Relatorioensaio.findBySexo", query = "SELECT r FROM Relatorioensaio r WHERE r.sexo = :sexo")
-    , @NamedQuery(name = "Relatorioensaio.findByVersaocorrecao", query = "SELECT r FROM Relatorioensaio r WHERE r.versaocorrecao = :versaocorrecao")})
 public class Relatorioensaio implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
-    @Column(name = "ano")
-    private Integer ano;
-    @Column(name = "correcao")
-    private Boolean correcao;
-    @Column(name = "datacoleta")
-    @Temporal(TemporalType.DATE)
-    private Date datacoleta;
-    @Column(name = "dataemissao")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date dataemissao;
-    @Column(name = "dataentrada")
-    @Temporal(TemporalType.DATE)
-    private Date dataentrada;
-    @Column(name = "dataresultado1")
-    @Temporal(TemporalType.DATE)
-    private Date dataresultado1;
-    @Column(name = "dataresultado2")
-    @Temporal(TemporalType.DATE)
-    private Date dataresultado2;
-    @Size(max = 255)
-    @Column(name = "endreco")
-    private String endreco;
-    @Size(max = 255)
-    @Column(name = "especie")
-    private String especie;
-    @Size(max = 255)
-    @Column(name = "estado")
-    private String estado;
-    @Size(max = 255)
-    @Column(name = "idade")
-    private String idade;
-    @Size(max = 255)
-    @Column(name = "liberadopor")
-    private String liberadopor;
-    @Size(max = 255)
-    @Column(name = "liberadoporcrmv")
-    private String liberadoporcrmv;
-    @Size(max = 255)
-    @Column(name = "materialanalisado")
-    private String materialanalisado;
-    @Size(max = 255)
-    @Column(name = "materialanalisadopb")
-    private String materialanalisadopb;
-    @Size(max = 255)
-    @Column(name = "municipio")
-    private String municipio;
-    @Column(name = "numerolaudo")
+    private Long id;
+    
+    @ManyToOne
+    @JoinColumn(referencedColumnName = "id")
+    private Principal principalid;    
     private Integer numerolaudo;
-    @Size(max = 2147483647)
-    @Column(name = "observacoes1")
-    private String observacoes1;
-    @Size(max = 2147483647)
-    @Column(name = "observacoes2")
-    private String observacoes2;
-    @Size(max = 255)
-    @Column(name = "proprietario")
-    private String proprietario;
-    @Size(max = 255)
-    @Column(name = "raca")
-    private String raca;
-    @Size(max = 255)
-    @Column(name = "registroamostra")
+    private Integer ano;
     private String registroamostra;
-    @Column(name = "relatorioenviado")
-    private Boolean relatorioenviado;
-    @Size(max = 255)
-    @Column(name = "remetente")
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date dataentrada;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date datacoleta;
+    private String materialanalisado;
+    private String materialanalisadopb;
     private String remetente;
-    @Size(max = 255)
-    @Column(name = "responsavel1")
-    private String responsavel1;
-    @Size(max = 255)
-    @Column(name = "responsavel2")
-    private String responsavel2;
-    @Size(max = 255)
-    @Column(name = "resultado1")
-    private String resultado1;
-    @Size(max = 255)
-    @Column(name = "resultado2")
-    private String resultado2;
-    @Column(name = "resultadofinal")
-    private Boolean resultadofinal;
-    @Size(max = 255)
-    @Column(name = "sexo")
+    private String contatoremetente;
+    private String proprietario;
+    private String endreco;
+    private String municipio;
+    private String estado;
+    private String especie;
+    private String raca;
     private String sexo;
-    @Column(name = "versaocorrecao")
-    private Integer versaocorrecao;
-    @OneToMany(mappedBy = "relatorioensaioId")
-    private List<Liberacaoderelatoriodeensaio> liberacaoderelatoriodeensaioCollection;
-    @JoinColumn(name = "assinoulaudo_id", referencedColumnName = "id")
-    @ManyToOne
-    private Login assinoulaudoId;
-    @JoinColumn(name = "principalid_id", referencedColumnName = "id")
-    @ManyToOne
-    private Principal principalidId;
+    private String idade;
+    private String resultado1;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date dataresultado1;
+    private String responsavel1;
+    @Lob
+    private String observacoes1;
+    private String resultado2;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date dataresultado2;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date iniciopb;
+    private String responsavel2;
+    @Lob
+    private String observacoes2;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date dataemissao;
+    private boolean relatorioenviado;
+    boolean correcao;
+    private int versaocorrecao;
+    @OneToOne
+    @JoinColumn(referencedColumnName = "id")
+    private Login assinoulaudo;
+    private String liberadopor;
+    private String liberadoporcrmv;
+    private boolean resultadofinal;
+    @Transient
+    private boolean enviaremail;
 
     public Relatorioensaio() {
     }
 
-    public Relatorioensaio(Integer id) {
+    public Relatorioensaio(Long id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -435,31 +350,42 @@ public class Relatorioensaio implements Serializable {
         this.versaocorrecao = versaocorrecao;
     }
 
-    @XmlTransient    @JsonIgnore
-    public List<Liberacaoderelatoriodeensaio> getLiberacaoderelatoriodeensaioCollection() {
-        return liberacaoderelatoriodeensaioCollection;
+    public String getContatoremetente() {
+        return contatoremetente;
     }
 
-    public void setLiberacaoderelatoriodeensaioCollection(List<Liberacaoderelatoriodeensaio> liberacaoderelatoriodeensaioCollection) {
-        this.liberacaoderelatoriodeensaioCollection = liberacaoderelatoriodeensaioCollection;
+    public void setContatoremetente(String contatoremetente) {
+        this.contatoremetente = contatoremetente;
     }
 
-    public Login getAssinoulaudoId() {
-        return assinoulaudoId;
+    public Date getIniciopb() {
+        return iniciopb;
     }
 
-    public void setAssinoulaudoId(Login assinoulaudoId) {
-        this.assinoulaudoId = assinoulaudoId;
+    public void setIniciopb(Date iniciopb) {
+        this.iniciopb = iniciopb;
     }
 
-    public Principal getPrincipalidId() {
-        return principalidId;
+    public Login getAssinoulaudo() {
+        return assinoulaudo;
     }
 
-    public void setPrincipalidId(Principal principalidId) {
-        this.principalidId = principalidId;
+    public void setAssinoulaudo(Login assinoulaudo) {
+        this.assinoulaudo = assinoulaudo;
     }
 
+    @JsonIgnore
+    public boolean isEnviaremail() {
+        return enviaremail;
+    }
+
+    public void setEnviaremail(boolean enviaremail) {
+        this.enviaremail = enviaremail;
+    }
+    
+    
+
+    
     @Override
     public int hashCode() {
         int hash = 0;

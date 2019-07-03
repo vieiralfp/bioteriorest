@@ -7,7 +7,6 @@ package model;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -42,47 +41,43 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Liberacaoderesultados implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
+     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
+    private Long id;
     @Column(name = "datalibrecao")
     @Temporal(TemporalType.DATE)
-    private Date datalibrecao;
-    @Size(max = 2147483647)
-    @Column(name = "emails")
-    private String emails;
-    @Size(max = 255)
-    @Column(name = "formalibercao")
-    private String formalibercao;
+    private Date datalibrecao;    
+    @Column(name = "tiporesultado")
+    private String tiporesultado;
+    @ManyToOne
+    @JoinColumn(name = "responsavelenvio", referencedColumnName = "id")
+    private Login responsavelenvio;
+    @ManyToOne
+    @JoinColumn(name = "principal", referencedColumnName = "id")
+    private Principal principal;
     @Size(max = 2147483647)
     @Column(name = "recebedores")
     private String recebedores;
+    @Size(max = 2147483647)
+    @Column(name = "emails")
+    private String emails;
+    @Column(name = "formalibercao")
+    private String formalibercao;
     @Column(name = "recebido")
-    private Boolean recebido;
-    @Size(max = 255)
-    @Column(name = "tiporesultado")
-    private String tiporesultado;
-    @JoinColumn(name = "responsavelenvio", referencedColumnName = "id")
-    @ManyToOne
-    private Login responsavelenvio;
-    @JoinColumn(name = "principal", referencedColumnName = "id")
-    @ManyToOne
-    private Principal principal;
+    private boolean recebido;
 
     public Liberacaoderesultados() {
     }
 
-    public Liberacaoderesultados(Integer id) {
+    public Liberacaoderesultados(Long id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

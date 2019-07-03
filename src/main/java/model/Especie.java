@@ -9,18 +9,19 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+import org.eclipse.persistence.annotations.Index;
 
 /**
  *
@@ -36,22 +37,19 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Especie implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
+     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Lob
-    @Column(name = "especie", columnDefinition = "citext")
+    @Index
+    @Column(name = "especie", columnDefinition = "citext", unique = true)
     private String especie;
-    @Column(name = "sivcont")
-    private Boolean sivcont;
-    @OneToMany(mappedBy = "especieid")
-    private List<Principal> principalCollection;
-    @OneToMany(mappedBy = "especie")
-    private List<Racas> racasCollection;
-    @OneToMany(mappedBy = "especieid")
-    private List<Racas> racasCollection1;
+    @Column (name = "sivcont")
+    private boolean sivcont;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true,  mappedBy = "especieid")
+    @OrderBy("raca")
+    private List<Racas> racaslist;
 
     public Especie() {
     }
@@ -84,32 +82,24 @@ public class Especie implements Serializable {
         this.sivcont = sivcont;
     }
 
-    @XmlTransient    @JsonIgnore
-    public List<Principal> getPrincipalCollection() {
-        return principalCollection;
+    public boolean isSivcont() {
+        return sivcont;
     }
 
-    public void setPrincipalCollection(List<Principal> principalCollection) {
-        this.principalCollection = principalCollection;
+    public void setSivcont(boolean sivcont) {
+        this.sivcont = sivcont;
     }
 
-    @XmlTransient    @JsonIgnore
-    public List<Racas> getRacasCollection() {
-        return racasCollection;
+    @JsonIgnore
+    public List<Racas> getRacaslist() {
+        return racaslist;
     }
 
-    public void setRacasCollection(List<Racas> racasCollection) {
-        this.racasCollection = racasCollection;
+    public void setRacaslist(List<Racas> racaslist) {
+        this.racaslist = racaslist;
     }
 
-    @XmlTransient    @JsonIgnore
-    public List<Racas> getRacasCollection1() {
-        return racasCollection1;
-    }
-
-    public void setRacasCollection1(List<Racas> racasCollection1) {
-        this.racasCollection1 = racasCollection1;
-    }
+ 
 
     @Override
     public int hashCode() {
